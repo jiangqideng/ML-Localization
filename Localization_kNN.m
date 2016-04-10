@@ -3,6 +3,7 @@ clc;
 clear;
 %% Data Preprocessing
 load radioMap2--20m-15-6APm;
+% load DFL_radio_map;
 n = size(fingerprint, 3);%the number of APs
 m = 20000;%the number of collected samples
 [RSSMatrix, gridLabel, x_real, y_real] = fp_collection(fingerprint, n, m);
@@ -13,15 +14,17 @@ labelTrain = gridLabel(1 : ceil(PCT*m), :);
 dataTest = RSSMatrix(ceil(PCT*m) + 1 : end, :);
 labelTest = gridLabel(ceil(PCT*m) + 1 : end, :);
 
-%% kNN
-for k = 1:50%select an optimal k
-    model = ClassificationKNN.fit(dataTrain(1:ceil(PCT*length(dataTrain)), :),labelTrain(1:ceil(PCT*length(dataTrain))),'NumNeighbors',k);
-    labelPredict = predict(model, dataTrain(ceil(PCT*length(dataTrain)) + 1 : end, :));
-    accuracy(k) = sum( labelPredict == labelTrain(ceil(PCT*length(dataTrain)) + 1 : end) ) / length(labelPredict);
-end
-[~, k] = max(accuracy);
-fprintf('optimal k = %d\n', k);
+%% select an optimal k
+% for k = 1:50%select an optimal k
+%     model = ClassificationKNN.fit(dataTrain(1:ceil(PCT*length(dataTrain)), :),labelTrain(1:ceil(PCT*length(dataTrain))),'NumNeighbors',k);
+%     labelPredict = predict(model, dataTrain(ceil(PCT*length(dataTrain)) + 1 : end, :));
+%     accuracy(k) = sum( labelPredict == labelTrain(ceil(PCT*length(dataTrain)) + 1 : end) ) / length(labelPredict);
+% end
+% [~, k] = max(accuracy);
+% fprintf('optimal k = %d\n', k);
 
+%% kNN
+k = 20;
 model = ClassificationKNN.fit(dataTrain,labelTrain,'NumNeighbors',k);
 
 labelPredict = predict(model, dataTest);
