@@ -1,1 +1,0 @@
-%Simulations: generate radio maps for DFL
