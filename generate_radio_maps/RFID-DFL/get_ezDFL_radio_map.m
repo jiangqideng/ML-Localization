@@ -1,4 +1,4 @@
-function radioMap = get_ezDFL_radio_map(roomLength, roomWidth, gridSize, attenuationFactor)
+function radioMap = get_ezDFL_radio_map(roomLength, roomWidth, gridSize, attenuationFactor, ellipse_size)
 %get_ezDFL_radio_map: 
 %simple DFL simmulation, add an attenuation constant for blocked links.
 
@@ -8,6 +8,7 @@ function radioMap = get_ezDFL_radio_map(roomLength, roomWidth, gridSize, attenua
         roomWidth = 15;
         gridSize = 0.1;
         attenuationFactor = 20;
+        ellipse_size = 1;
     end
     if roomLength ~= fix(roomLength) || roomWidth ~= fix(roomWidth)
         disp('roomLength or roomWidth not integer!');
@@ -28,16 +29,16 @@ function radioMap = get_ezDFL_radio_map(roomLength, roomWidth, gridSize, attenua
     
     %cheak blocked links
     [X, Y] = meshgrid(0.1 : 0.1 : roomLength - 0.1, 0.1 : 0.1 : roomWidth - 0.1);
+    X = X';
+    Y = Y';
     objectPosition = [X(:), Y(:)];
-    opn = size(objectPosition, 1);
-    ln = size(links, 1);
-    [a, b] = meshgrid(1 : opn, 1 : ln);
-    extObjectPosition = objectPosition(a(:), :);
-    extLinks = links(b(:), :);
+    extObjectPosition = repmat(objectPosition, size(links, 1), 1);
+    tmp = repmat(links, 1, size(objectPosition, 1))';
+    extLinks = reshape(tmp(:), 4, size(extObjectPosition, 1))';
     extLinkDistance = sqrt((extLinks(:, 1) - extLinks(:, 3)).^2 + (extLinks(:, 2) - extLinks(:, 4)).^2);
     readerObjectTagDistance = sqrt((extObjectPosition(:, 1) - extLinks(:, 1)).^2 + (extObjectPosition(:, 2) - extLinks(:, 2)).^2) ...
         + sqrt((extObjectPosition(:, 1) - extLinks(:, 3)).^2 + (extObjectPosition(:, 2) - extLinks(:, 4)).^2);
-    index = (readerObjectTagDistance < extLinkDistance + 2); %assume being blocked when a object in the ellipse
+    index = (readerObjectTagDistance < extLinkDistance + ellipse_size); %assume being blocked when a object in the ellipse
     
     % add an attenuation constant for those blocked links
     unfoldedRadioMap(index) = unfoldedRadioMap(index) - attenuationFactor;
