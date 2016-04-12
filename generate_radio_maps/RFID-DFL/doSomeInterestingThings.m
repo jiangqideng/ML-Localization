@@ -40,4 +40,18 @@ for t = 2 : length(trace)
     end
     h1 = plot(trace(t, 1), trace(t, 2), 'b.', 'markerSize', 30); hold on; 
     pause(0.01);
+    
+    
+%% 生成动画
+    m(:,t-1)=getframe;            %将图形保存到m矩阵    
+    M=getframe(gcf);
+    nn=frame2im(M);
+    [nn,cm]=rgb2ind(nn,256);
+    if t-1==1
+        imwrite(nn,cm,'out.gif','gif','LoopCount',inf,'DelayTime',0.01);% 说明loopcount只是在i==1的时候才有用
+    else
+        %[nn,cm]=rgb2ind(nn,256);
+        imwrite(nn,cm,'out.gif','gif','WriteMode','append','DelayTime',0.01)%当i>=2的时候loopcount不起作用
+    end
+%%
 end
