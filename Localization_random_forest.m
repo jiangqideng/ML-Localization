@@ -1,8 +1,8 @@
 %Localization Simulation Based on Random Forest
 
 %% Data Preprocessing
-load radioMap2--20m-15-6APm;
-% load DFL_radio_map;
+% load radioMap2--20m-15-6APm;
+load DFL_radio_map;
 n = size(fingerprint, 3);%the number of APs
 m = 20000;%the number of collected samples
 [RSSMatrix, gridLabel, x_real, y_real] = fp_collection(fingerprint, n, m);
