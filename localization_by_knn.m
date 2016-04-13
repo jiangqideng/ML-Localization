@@ -1,5 +1,5 @@
 function [err_knn, classfication_Accuracy_knn] = localization_by_knn( dataTrain, labelTrain, dataTest, labelTest, x_real_test, y_real_test, k )
-%kNN_localization_simulation
+%localization_by_knn
     if nargin < 7
         % select an optimal k
         PCT = 0.7;
