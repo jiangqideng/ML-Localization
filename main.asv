@@ -3,12 +3,13 @@ clear;
 
 addpath(genpath(pwd));
 % load radioMap2--20m-15-6APm;
+% load radioMap5--20m-15-20AP;
 load DFL_radio_map;
 
 noise = 3;
-LN = 1000;
+LN = 100;
 
-fingerprint = fingerprint + normrnd(0, 3, size(fingerprint)); % add noise
+fingerprint = fingerprint + normrnd(0, noise, size(fingerprint)); % add noise
 m = size(fingerprint, 3);
 for linksNumber = LN
     idx = randperm(m);
@@ -20,7 +21,7 @@ for linksNumber = LN
     %svm
     [err_svm, classfication_Accuracy_svm] = localization_by_svm( dataTrain, labelTrain, dataTest, labelTest, x_real_test, y_real_test);
     %random forest
-    [err_knn, classfication_Accuracy_RF] = localization_by_randomForest( dataTrain, labelTrain, dataTest, labelTest, x_real_test, y_real_test, 50 );
+    [err_knn, classfication_Accuracy_RF] = localization_by_randomForest( dataTrain, labelTrain, dataTest, labelTest, x_real_test, y_real_test, 2 );
 end
 
 
