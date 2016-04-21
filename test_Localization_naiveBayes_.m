@@ -2,8 +2,9 @@
 clc;
 clear;
 %% Data Preprocessing
-% load radioMap2--20m-15-6APm;
-load DFL_radio_map;
+addpath(genpath(pwd));
+load radioMap2--20m-15-6APm;
+% load DFL_radio_map;
 fingerprint = fingerprint + normrnd(0, 3, size(fingerprint)); % add noise
 n = size(fingerprint, 3);%the number of APs
 m = 20000;%the number of collected samples
