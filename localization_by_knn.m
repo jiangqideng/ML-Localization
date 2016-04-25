@@ -17,7 +17,7 @@ function [err_knn, classfication_Accuracy_knn] = localization_by_knn( dataTrain,
     classfication_Accuracy_knn = sum(labelPredict == labelTest) / length(labelTest);
     [x, y] = label2xy(labelPredict);
     err_knn = sqrt((x - x_real_test).^2 + (y - y_real_test).^2);
-    fprintf('(kNN) Classfication Accuracy: %f%%\n', classfication_Accuracy_knn);
-    fprintf('(kNN) Mean Localization error: %fm\n', mean(err_knn));
+%     fprintf('(kNN) Classfication Accuracy: %f%%\n', classfication_Accuracy_knn);
+%     fprintf('(kNN) Mean Localization error: %fm\n', mean(err_knn));
 end
 

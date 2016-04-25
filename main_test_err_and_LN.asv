@@ -11,7 +11,10 @@ LN = 280;
 
 fingerprint = fingerprint + normrnd(0, noise, size(fingerprint)); % add noise
 m = size(fingerprint, 3);
-for linksNumber = 280
+for linksNumber = 1:LN
+    tmp = 0;
+    for times = 1:100
+    
     idx = randperm(m);
     fp = fingerprint(:, :, idx(1:linksNumber));
     fprintf('linksNumber: %d\n', linksNumber);
@@ -26,7 +29,10 @@ for linksNumber = 280
 %     [err_naiveBayes, classfication_Accuracy_naiveBayes] = localization_by_naiveBayes( dataTrain, labelTrain, dataTest, labelTest, x_real_test, y_real_test);
 %     %discriminant analysis
 %     [err_da, classfication_Accuracy_da] = localization_by_DA( dataTrain, labelTrain, dataTest, labelTest, x_real_test, y_real_test);
-
+    
+    tmp(times) = mean(err_knn);
+    end
+    knn_err_with_linksNumber(linksNumber) = mean(tmp);
 end
 
 
