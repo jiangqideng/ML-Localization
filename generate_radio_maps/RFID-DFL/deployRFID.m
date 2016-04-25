@@ -28,6 +28,11 @@ function [ readerPosition, tagPosition, links, linkDistance, readerNumbers, tagN
     [a, b] = meshgrid(1:readerNumbers, 1:tagNumbers);
     links = [readerPosition(a(:), :), tagPosition(b(:), :)];
     linkDistance = sqrt((links(:, 1) - links(:, 3)).^2 + (links(:, 2) - links(:, 4)).^2);
+    
+%     %delete some short links
+%     idx = linkDistance > roomLength / 2 & linkDistance > roomWidth / 2;
+%     links = links(idx, :);
+%     linkDistance = linkDistance(idx, :);
 
 end
 
