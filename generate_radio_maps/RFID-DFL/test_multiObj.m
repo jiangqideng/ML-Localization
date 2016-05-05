@@ -12,11 +12,8 @@ ellipse_size = 0.1;
 [initialRadioMap, index] = getRss_multi_obj_DFL_pre(roomLength, roomWidth, gridSize, attenuationFactor, ellipse_size);
 
 n_obj = 2;
-positions = [15.5, 2.5; 10, 12.5];
+positions = [15.5, 11.5; 10, 11.5];
 rss = getRss_multi_obj_DFL(n_obj, positions, initialRadioMap, index, attenuationFactor);
-
-
-
 
 
 draw_RFID_deployment(roomLength, roomWidth);hold on;
