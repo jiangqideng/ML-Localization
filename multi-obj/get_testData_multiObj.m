@@ -2,9 +2,9 @@ roomLength = 20;
 roomWidth = 15;
 gridSize = 0.1;
 attenuationFactor = 20;
-ellipse_size = 0.1;
+ellipse_size = 1;
 
-n_obj = 3;
+n_obj = 1;
 t = 10000;
 
 traces = getRandomTraces( roomLength, roomWidth, t, n_obj );

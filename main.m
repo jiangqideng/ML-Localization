@@ -11,7 +11,7 @@ LN = 280;
 
 fingerprint = fingerprint + normrnd(0, noise, size(fingerprint)); % add noise
 m = size(fingerprint, 3);
-for linksNumber = 10
+for linksNumber = 1344
     idx = randperm(m);
     fp = fingerprint(:, :, idx(1:linksNumber));
     fprintf('linksNumber: %d\n', linksNumber);

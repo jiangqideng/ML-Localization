@@ -13,28 +13,26 @@ m = size(fingerprint, 3);
 %% test single object
 load testData-1; %traces, rss, grilLabel
 rss = rss(1:1000, :);
-traces = traces(1:1000, :);
-gridLabel = gridLabel(1:1000);
+traces = traces
 
-Thr = -10;
+
+Thr = 10;
 t = size(rss, 1);
 for i = 1 : t
     cur_rss = rss(i, :);
     idx = abs(cur_rss - initialRadioMap') > Thr;
-    %only use changed links to train: mean error = 0.6991m    和椭圆大小有关系呀
+    %only use changed links to train: mean error = 0.6579m
     k = 20;
     model = ClassificationKNN.fit(dataTrain(:, idx),labelTrain,'NumNeighbors',k);
     labelPredict(i) = predict(model, cur_rss(idx));
     if rem(i, 10) == 0
         disp(i);
-        disp(sum(idx));
     end
 end
 
 classfication_Accuracy_knn = sum(labelPredict == gridLabel') / length(gridLabel);
 [x, y] = label2xy(labelPredict);
 err_knn = sqrt((x' - traces(:, 1)).^2 + (y' - traces(:, 2)).^2);
-disp(mean(err_knn));
 
 
 
