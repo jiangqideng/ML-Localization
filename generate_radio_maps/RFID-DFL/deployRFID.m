@@ -20,8 +20,8 @@ function [ readerPosition, tagPosition, links, linkDistance, readerNumbers, tagN
 %     [X, Y] = meshgrid([0 roomLength], [0 roomWidth]);
     tagPosition = [X(:), Y(:)];
     
-    idx = tagPosition(:, 1) == 0 | tagPosition(:, 1) == roomLength | tagPosition(:, 2) == 0 | tagPosition(:, 2) == roomWidth;
-    tagPosition = tagPosition(idx, :);
+%     idx = tagPosition(:, 1) == 0 | tagPosition(:, 1) == roomLength | tagPosition(:, 2) == 0 | tagPosition(:, 2) == roomWidth;
+%     tagPosition = tagPosition(idx, :);
     
     readerNumbers = size(readerPosition, 1);
     tagNumbers = size(tagPosition, 1);
