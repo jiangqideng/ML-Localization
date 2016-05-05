@@ -1,4 +1,4 @@
-function [unfoldedRadioMap, index, n_links] = get_multi_obj_DFL_pre(roomLength, roomWidth, gridSize, attenuationFactor, ellipse_size)
+function [initialRadioMap, index] = getRss_multi_obj_DFL_pre(roomLength, roomWidth, gridSize, attenuationFactor, ellipse_size)
 %get_multi_ob_DFL_radio_map: 
 %extended from 'get_ezDFL_radio_map.m'
 
@@ -8,7 +8,7 @@ function [unfoldedRadioMap, index, n_links] = get_multi_obj_DFL_pre(roomLength, 
         roomWidth = 15;
         gridSize = 0.1;
         attenuationFactor = 20;
-        ellipse_size = 1;
+        ellipse_size = 0.4;
     end
     if roomLength ~= fix(roomLength) || roomWidth ~= fix(roomWidth)
         disp('roomLength or roomWidth not integer!');
@@ -40,8 +40,7 @@ function [unfoldedRadioMap, index, n_links] = get_multi_obj_DFL_pre(roomLength, 
         + sqrt((extObjectPosition(:, 1) - extLinks(:, 3)).^2 + (extObjectPosition(:, 2) - extLinks(:, 4)).^2);
     index = (readerObjectTagDistance < extLinkDistance + ellipse_size); %assume being blocked when a object in the ellipse
     
-    n_links = size(links, 1);
     % add an attenuation constant for those blocked links
-%     unfoldedRadioMap(index) = unfoldedRadioMap(index) - attenuationFactor;
-%     radioMap = reshape(unfoldedRadioMap, roomLength / gridSize - 1, roomWidth / gridSize - 1, size(links, 1));
+    index = reshape(index, roomLength / gridSize - 1, roomWidth / gridSize - 1, size(links, 1));
+    initialRadioMap = attenuation;
 end
