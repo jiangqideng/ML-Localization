@@ -46,7 +46,7 @@ traces = traces(1:1000, :, 1);
 gridLabel = gridLabel(1:1000, 1);
 
 t = size(rss, 1);
-for i = 10 %1 : t
+for i = 1 : t
     cur_rss = rss(i, :);
     idx = abs(cur_rss - initialRadioMap') > T_rssChange;
     linkIdx = find(idx == 1);
@@ -60,14 +60,18 @@ for i = 10 %1 : t
     
     
     idx = idx1;
+    
+    
     k = 20;
     model = ClassificationKNN.fit(dataTrain(:, idx),labelTrain,'NumNeighbors',k);
     labelPredict(i) = predict(model, cur_rss(idx));
-    if rem(i, 100) == 0
+    if rem(i, 10) == 0
         disp(i);
         disp(sum(idx));
     end
 end
+
+return;
 
 classfication_Accuracy_knn = sum(labelPredict == gridLabel') / length(gridLabel);
 [x, y] = label2xy(labelPredict);

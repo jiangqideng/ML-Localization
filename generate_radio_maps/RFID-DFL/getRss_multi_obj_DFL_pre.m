@@ -8,7 +8,7 @@ function [initialRadioMap, index] = getRss_multi_obj_DFL_pre(roomLength, roomWid
         roomWidth = 15;
         gridSize = 0.1;
         attenuationFactor = 20;
-        ellipse_size = 0.4;
+        ellipse_size = 1;
     end
     if roomLength ~= fix(roomLength) || roomWidth ~= fix(roomWidth)
         disp('roomLength or roomWidth not integer!');
