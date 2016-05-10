@@ -12,4 +12,5 @@ function dist = cal_linksDistance(fingerprint, initialRadioMap, T_rssChange)
     end
 
     dist = 1 ./ (dist + 1);
+%     dist = -dist + max(max(dist));
 end
