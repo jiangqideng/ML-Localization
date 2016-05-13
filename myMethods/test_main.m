@@ -1,6 +1,6 @@
 
-clc;
-clear;
+% clc;
+% clear;
 load DFL_radio_map;
 load initial_DFL_radio_map;
 
@@ -18,46 +18,31 @@ T_dist = max_dis_within_a_cluster(fingerprint, initialRadioMap, T_rssChange, dis
 % T_dist = mean_dis_within_a_cluster(fingerprint, initialRadioMap, T_rssChange); 
 T_links = maxLinks_within_a_cluster(fingerprint, initialRadioMap, T_rssChange);%最多能影响多少条链路
 
-n_obj = 5;
-t = 1000;
+% n_obj = 3;
+t = 100;
 [traces, rss, gridLabel] = get_testData_multiObj(n_obj, t);
+
+traces_ = zeros(size(traces));
+gridLabel_ = zeros(size(gridLabel));
 
 for i = 1 : t
     cur_rss = rss(i, :);
-    n_obj_predict = count_objs(cur_rss, dist, initialRadioMap, T_rssChange);
+    n_obj_pre = n_obj; %先假设个数预测准确正确
+    [n_obj_predict, obj_link_idx] = count_objs(cur_rss, dist, initialRadioMap, T_rssChange, n_obj_pre);
+
+%     [n_obj_predict, obj_link_idx] = links_reduction(n_obj_predict, obj_link_idx, dist);
+    
+    for j = 1 : n_obj_predict
+        idx = obj_link_idx{j};
+        k = 5;
+        model = ClassificationKNN.fit(dataTrain(:, idx),labelTrain,'NumNeighbors',k);
+        gridLabel_(i, j) = predict(model, cur_rss(idx));
+    end
+end
+
+%calculate error
+
+[err, traces_] = cal_multi_obj_err(gridLabel_, traces);
+fprintf('n_objs = %d, mean error = %f\n', n_obj, mean(err));
 
 
-% % 
-% % for i = 1 : t
-% %     cur_rss = rss(i, :);
-% %     idx = abs(cur_rss - initialRadioMap') > T_rssChange;
-% %     linkIdx = find(idx == 1);
-% %     c_links = dist(linkIdx, linkIdx);
-% %     Y_dist = f_squareform(c_links);
-% %     Z = linkage(Y_dist, 'average');
-% %     [H,T] = dendrogram(Z,'colorthreshold','default');
-% %     T = cluster(Z,'maxclust',2);
-% %     idx1 = linkIdx(T == 1);
-% %     idx2 = linkIdx(T == 2);
-% %     
-% %     
-% %     idx = idx1;
-% %     
-% %     
-% %     k = 20;
-% %     model = ClassificationKNN.fit(dataTrain(:, idx),labelTrain,'NumNeighbors',k);
-% %     labelPredict(i) = predict(model, cur_rss(idx));
-% %     if rem(i, 10) == 0
-% %         disp(i);
-% %         disp(sum(idx));
-% %     end
-% % end
-% % 
-% % return;
-% % 
-% % classfication_Accuracy_knn = sum(labelPredict == gridLabel') / length(gridLabel);
-% % [x, y] = label2xy(labelPredict);
-% % err_knn = sqrt((x' - traces(:, 1)).^2 + (y' - traces(:, 2)).^2);
-% % disp(mean(err_knn));
-% % 
-% % 
